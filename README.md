@@ -7,7 +7,7 @@
 * Enables modification of request/response.
 
 ## Instalation
-Add this Swift Package Manager (SPM) to your project: [shell script](https://github.com/engenious-inc/swift-proxy.git)
+Add this Swift Package Manager (SPM) to your project: `https://github.com/engenious-inc/swift-proxy.git`
 
 ## Usage
 
