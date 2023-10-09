@@ -10,7 +10,7 @@
 Add this Swift Package Manager (SPM) to your project: `https://github.com/engenious-inc/swift-proxy.git`
 
 ## Usage
-
+```
 lazy var stubRecorder = StubRecorder(
     recordModePath: "/FULL_PATH_TO_PROJECT/StubResources",
     playbackModeRelativePath: "StubResources",
@@ -27,3 +27,4 @@ lazy var stubRecorder = StubRecorder(
     optionalFileExtension: ".json"
 )
 stubRecorder.start()
+```
