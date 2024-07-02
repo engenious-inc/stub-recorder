@@ -1,4 +1,5 @@
 import Foundation
+import Network
 import SwiftProxy
 import Logging
 
@@ -189,11 +190,6 @@ open class StubRecorder: ProxyDelegate {
 			sleep(1)
 			stop(timeout: timeout - 1)
 			return
-		}
-		do {
-			try proxy?.stop()
-		} catch {
-			logger.error("❌ \(error)")
 		}
 		writeAndFlush()
 	}
@@ -585,25 +581,21 @@ public  extension StubRecorder {
 		}
 		
 		private func getRandomPort() -> Int? {
-			guard let port = SocketPort(tcpPort: 0) else {
-				return nil
-			}
-			let addressData = port.address
-			port.invalidate()
-			
-			let addressLen = Int (addressData[1])
-			var portNumber = 0
-			for i in 0 ..< addressLen {
-				let offset = 2 + i
-				let v = Int(addressData[offset])
-				// Values are in reverse order, need to shift left every
-				// time we get a new value, except the first time
-				if portNumber != 0 {
-					portNumber = portNumber << 8
-				}
-				portNumber += v
-			}
-			return portNumber
-		}
+            // Create a listener with an unspecified port (port 0)
+            let parameters = NWParameters.tcp
+            let listener = try? NWListener(using: parameters, on: .any)
+
+            // Start the listener
+            listener?.start(queue: .main)
+
+            // Extract the port number
+            if let port = listener?.port {
+                return Int(port.rawValue)
+            }
+
+            listener?.cancel()
+            return nil
+        }
+
 	}
 }
